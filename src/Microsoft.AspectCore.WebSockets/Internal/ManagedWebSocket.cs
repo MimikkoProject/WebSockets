@@ -16,6 +16,9 @@ namespace Microsoft.AspectCore.WebSockets.Internal
 {
     internal class ManagedWebSocket : WebSocket
     {
+
+        private static Task CompeletedTask = Task.FromResult(false);
+
         /// <summary>Creates a <see cref="ManagedWebSocket"/> from a <see cref="Stream"/> connected to a websocket endpoint.</summary>
         /// <param name="stream">The connected Stream.</param>
         /// <param name="isServer">true if this is the server-side of the connection; false if this is the client-side of the connection.</param>
@@ -271,7 +274,11 @@ namespace Microsoft.AspectCore.WebSockets.Internal
             }
             catch (Exception exc)
             {
+#if NETCORE
                 return Task.FromException(exc);
+#else
+                return exc.ToTask();
+#endif
             }
 
             MessageOpcode opcode =
@@ -304,7 +311,7 @@ namespace Microsoft.AspectCore.WebSockets.Internal
             }
             catch (Exception exc)
             {
-                return Task.FromException<WebSocketReceiveResult>(exc);
+                return exc.ToTask<WebSocketReceiveResult>();
             }
         }
 
@@ -318,7 +325,11 @@ namespace Microsoft.AspectCore.WebSockets.Internal
             }
             catch (Exception exc)
             {
+#if NETCORE
                 return Task.FromException(exc);
+#else
+                return exc.ToTask();
+#endif
             }
 
             return CloseAsyncPrivate(closeStatus, statusDescription, cancellationToken);
@@ -334,7 +345,11 @@ namespace Microsoft.AspectCore.WebSockets.Internal
             }
             catch (Exception exc)
             {
+#if NETCORE
                 return Task.FromException(exc);
+#else
+                return exc.ToTask();
+#endif
             }
 
             return SendCloseFrameAsync(closeStatus, statusDescription, cancellationToken);
@@ -395,7 +410,11 @@ namespace Microsoft.AspectCore.WebSockets.Internal
                 if (writeTask.IsCompleted)
                 {
                     writeTask.GetAwaiter().GetResult(); // propagate any exceptions
+#if NETCORE
                     return Task.CompletedTask;
+#else
+                    return CompeletedTask;
+#endif
                 }
 
                 // Up until this point, if an exception occurred (such as when accessing _stream or when
@@ -405,9 +424,14 @@ namespace Microsoft.AspectCore.WebSockets.Internal
             }
             catch (Exception exc)
             {
-                return Task.FromException(_state == WebSocketState.Aborted ?
+                var ex = _state == WebSocketState.Aborted ?
                     CreateOperationCanceledException(exc) :
-                    new WebSocketException(WebSocketError.ConnectionClosedPrematurely, exc));
+                    new WebSocketException(WebSocketError.ConnectionClosedPrematurely, exc);
+#if NETCORE
+                return Task.FromException(ex);
+#else
+                return ex.ToTask();
+#endif
             }
             finally
             {
@@ -507,7 +531,7 @@ namespace Microsoft.AspectCore.WebSockets.Internal
             {
                 // This exists purely to keep the connection alive; don't wait for the result, and ignore any failures.
                 // The call will handle releasing the lock.
-                SendFrameLockAcquiredNonCancelableAsync(MessageOpcode.Ping, true, new ArraySegment<byte>(Array.Empty<byte>()));
+                SendFrameLockAcquiredNonCancelableAsync(MessageOpcode.Ping, true, new ArraySegment<byte>(new byte[0]));
             }
             else
             {
