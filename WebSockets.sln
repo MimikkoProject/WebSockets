@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		global.json = global.json
 	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Microsoft.AspectCore.WebSockets", "src\Microsoft.AspectCore.WebSockets\Microsoft.AspectCore.WebSockets.xproj", "{2E70C208-32D1-4F83-8A0C-365BC5E2153F}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Microsoft.AspNetCore.WebSockets", "src\Microsoft.AspNetCore.WebSockets\Microsoft.AspNetCore.WebSockets.xproj", "{2E70C208-32D1-4F83-8A0C-365BC5E2153F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{C955673B-3ECD-4228-96B0-D69E6D607102}"
 EndProject

@@ -12,7 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspectCore.WebSockets.Internal.fx;
 
-namespace Microsoft.AspectCore.WebSockets.Internal
+namespace Microsoft.AspNetCore.WebSockets.Internal
 {
     internal class ManagedWebSocket : WebSocket
     {

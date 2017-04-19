@@ -4,7 +4,7 @@ using System.Net.WebSockets;
 using System.Text;
 using Microsoft.AspectCore.WebSockets.Internal.fx;
 
-namespace Microsoft.AspectCore.WebSockets.Internal
+namespace Microsoft.AspNetCore.WebSockets.Internal
 {
     internal static partial class WebSocketValidate
     {
