@@ -1,0 +1,17 @@
+﻿{
+  "version": "1.0.0-*",
+  "buildOptions": { "allowUnsafe": true },
+  "compilationOptions": { "allowUnsafe": true },
+  "dependencies": {
+    "Microsoft.AspNetCore.Http.Extensions": "1.0.0",
+    "Microsoft.Extensions.Options": "1.0.0",
+    "NETStandard.Library": "1.6.0",
+    "System.Numerics.Vectors": "4.3.0"
+  },
+
+  "frameworks": {
+    "netstandard1.6": {
+      "imports": "dnxcore50"
+    }
+  }
+}
